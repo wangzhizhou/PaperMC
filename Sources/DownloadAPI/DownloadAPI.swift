@@ -9,7 +9,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-public struct DownloadAPI {
+public struct DownloadAPI: Sendable {
 
     private let client = Client(
         serverURL: try! Servers.server1(),
