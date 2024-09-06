@@ -3,6 +3,7 @@
 
 import PackageDescription
 
+
 let package = Package(
     name: "PaperMC",
     platforms: [
@@ -58,5 +59,5 @@ let package = Package(
             dependencies: ["HangarAPI"]
         ),
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageModes: [.v6]
 )
