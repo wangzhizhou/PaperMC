@@ -1,5 +1,5 @@
 //
-//  DownloadAPI.swift
+//  PaperMCAPI.swift
 //
 //
 //  Created by joker on 2024/1/14.
@@ -9,7 +9,7 @@ import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-public struct DownloadAPI: Sendable {
+public struct PaperMCAPI: Sendable {
 
     private let client = Client(
         serverURL: try! Servers.server1(),
@@ -20,7 +20,7 @@ public struct DownloadAPI: Sendable {
     public init() {}
 }
 
-public extension DownloadAPI {
+public extension PaperMCAPI {
 
     enum Project: String, CaseIterable {
         case paper

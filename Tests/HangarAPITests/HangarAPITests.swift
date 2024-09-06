@@ -5,25 +5,27 @@
 //  Created by joker on 2023/6/20.
 //
 
-import XCTest
+import Testing
 import HangarAPI
 import Foundation
 
-final class HangarAPITests: XCTestCase {
-
+final class HangarAPITests {
+    
     let client = HangarAPIClient()
-
-    func testAuth() async throws {
+    
+    @Test
+    func apiAuth() async throws {
         let apiKey = ProcessInfo.processInfo.environment["API_KEY"] ?? ""
         let token = try await client.authenticate(with: apiKey)
         if let token {
             print(token)
         }
-        XCTAssertNotNil(token)
+        #expect(token != nil)
     }
-
-    func testTriggerAPI() async throws {
+    
+    @Test
+    func fetchPluginInfo() async throws {
         let latestVersion = try await client.latestVersion(for: "ViaVersion")
-        XCTAssertNotNil(latestVersion)
+        #expect(latestVersion != nil)
     }
 }
