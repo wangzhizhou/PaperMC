@@ -14,23 +14,16 @@ final class PaperMCAPITests {
     
     @Test
     func allProjects() async throws {
-        let projects = try await client.allProjects()
-        try #require(projects != nil)
-        
-        if let projects = projects {
-            let allProjects = PaperMCAPI.Project.allCases
-            #expect(projects == allProjects)
-        }
+        let projects = try #require(try await client.allProjects())
+        let allProjects = PaperMCAPI.Project.allCases
+        #expect(projects == allProjects)
     }
     
     @Test
     func paperLatestBuild() async throws {
-        let latestVersion = try await client.latestVersion(project: .paper)
-        try #require(latestVersion != nil)
-        if let latestVersion {
-            let latestBuild = try await client.latestBuild(project: .paper, version: latestVersion)
-            #expect(latestBuild != nil)
-        }
+        let latestVersion = try #require(try await client.latestVersion(project: .paper))
+        let latestBuild = try await client.latestBuild(project: .paper, version: latestVersion)
+        #expect(latestBuild != nil)
     }
 }
 
