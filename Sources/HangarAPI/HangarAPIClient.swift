@@ -46,11 +46,12 @@ public struct HangarAPIClient {
 
     public func latestReleaseVersion(for pluginName: String) async throws -> String? {
         let response = try await client.latestReleaseVersion(.init(path: .init(slug: pluginName), headers: .init(accept: [.init(contentType: .plainText)])))
-        guard case let .ok(output) = response
+        guard case let .ok(output) = response,
+              case let OpenAPIRuntime.HTTPBody.Length.known(bytes) = try output.body.plainText.length
         else {
             return nil
         }
-        return try await String(collecting: try output.body.plainText, upTo: 2 * 1024 * 1024)
+        return try await String(collecting: try output.body.plainText, upTo: Int(bytes))
     }
     
     public func downloadPlugin(name: String, version: String, platform: PluginPlatform) async throws -> PluginJavaArchive {
