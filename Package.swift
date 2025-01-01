@@ -23,9 +23,9 @@ let package = Package(
             targets: ["HangarAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.2.1"),
-        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.4.0"),
-        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.1"),
+        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.6.0"),
+        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.7.0"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.2"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -33,7 +33,7 @@ let package = Package(
         .target(
             name: "PaperMCAPI",
             dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                "Common",
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
             ],
             plugins: [
@@ -47,7 +47,7 @@ let package = Package(
         .target(
             name: "HangarAPI",
             dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+                "Common",
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
             ],
             plugins: [
@@ -58,6 +58,6 @@ let package = Package(
             name: "HangarAPITests",
             dependencies: ["HangarAPI"]
         ),
-    ],
-    swiftLanguageModes: [.v6]
+        .target(name: "Common", dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")])
+    ]
 )

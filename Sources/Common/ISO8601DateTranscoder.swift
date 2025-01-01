@@ -9,6 +9,8 @@ import Foundation
 import OpenAPIRuntime
 
 public struct ISO8601DateTranscoder: DateTranscoder {
+    
+    public init() {}
 
     var iso8601DateFormatter: ISO8601DateFormatter {
 
@@ -30,6 +32,7 @@ public struct ISO8601DateTranscoder: DateTranscoder {
     /// Creates and returns a date object from the specified ISO 8601 formatted string representation.
     public func decode(_ dateString: String) throws -> Date {
         guard let date = iso8601DateFormatter.date(from: dateString) else {
+            print(dateString)
             throw DecodingError.dataCorrupted(
                 .init(codingPath: [], debugDescription: "Expected date string to be ISO8601-formatted.")
             )

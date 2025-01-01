@@ -1511,6 +1511,11 @@
                     "200": {
                         "description": "Ok",
                         "content": {
+                            "application/java-archive": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
                             "application/octet-stream": {
                                 "schema": {
                                     "type": "object"

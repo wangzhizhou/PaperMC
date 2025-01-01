@@ -8,12 +8,13 @@
 import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
+import Common
 
 public struct PaperMCAPI: Sendable {
 
     private let client = Client(
-        serverURL: try! Servers.server1(),
-        configuration: .init(dateTranscoder: ISO8601DateTranscoder()),
+        serverURL: try! Servers.Server1.url(),
+        configuration: .init(dateTranscoder: Common.ISO8601DateTranscoder()),
         transport: URLSessionTransport()
     )
 

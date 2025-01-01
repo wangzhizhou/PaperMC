@@ -21,9 +21,53 @@ final class HangarAPITests {
         #expect(token != nil)
     }
     
-    @Test
-    func fetchPluginInfo() async throws {
-        let latestVersion = try await client.latestVersion(for: "ViaVersion")
-        #expect(latestVersion != nil)
+    
+    @Test(arguments: [
+        "ViaVersion",
+        "ViaBackwards",
+        "DeathChest",
+        "Essentials",
+        "Geyser",
+        "GriefPrevention",
+        "SkinsRestorer",
+        "WorldEdit",
+    ])
+    func fetchPluginInfo(name: String) async throws {
+        let latestReleaseVersion = try await client.latestReleaseVersion(for: name)
+        #expect(latestReleaseVersion != nil)
+    }
+    
+    @Test(arguments: [
+        "BackOnDeath",
+        "GetMeHome",
+        "LoginSecurity",
+        "LuckPerms",
+        "Vault",
+        "WorldGuard",
+    ])
+    func doInHangerPlugin(name: String) async throws {
+        let latestReleaseVersion = try await client.latestReleaseVersion(for: name)
+        #expect(latestReleaseVersion == nil)
+    }
+
+    @Test(arguments: [
+        "ViaVersion"
+    ])
+    func versions(name: String) async throws {
+        let versions = try #require(try await client.versions(for: name))
+        #expect(!versions.isEmpty)
+        
+        let firstVersion = try #require(versions.first)
+        let firstVersionName = try #require(firstVersion.name)
+        let fetchFirstVersion = try #require(try await client.version(for: name, versionName: firstVersionName))
+        #expect(fetchFirstVersion == firstVersion)
+        
+        let httpBody = try await client.downloadPlugin(name: name, version: firstVersionName, platform: .PAPER)
+        if case let PluginJavaArchive.Length.known(bytes) = httpBody.length, bytes > 0 {
+            let binary = try await Data(collecting: httpBody, upTo: Int(bytes))
+            #expect(binary.count == bytes)
+        } else {
+            Issue.record("download plugin jar failed!")
+        }
     }
 }

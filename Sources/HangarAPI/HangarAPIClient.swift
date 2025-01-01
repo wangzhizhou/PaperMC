@@ -4,7 +4,7 @@
 //
 //  Created by joker on 2023/6/20.
 //
-
+import Common
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -13,7 +13,10 @@ public struct HangarAPIClient {
 
     public init() {}
 
-    private let client = Client(serverURL: try! Servers.server1(), transport: URLSessionTransport())
+    private let client = Client(
+        serverURL: try! Servers.Server1.url(),
+        configuration: .init(dateTranscoder: Common.ISO8601DateTranscoder()),
+        transport: URLSessionTransport())
 
     /// 调API前的授权接口
     /// - Parameter apiKey: https://hangar.papermc.io/ 平台帐号申请的apiKey
@@ -30,16 +33,28 @@ public struct HangarAPIClient {
             return nil
         }
     }
+    
+    public func versions(for pluginName: String) async throws -> [PluginVersion]? {
+        let response = try await client.listVersions(path: .init(slug: pluginName), query: .init(pagination: .init()))
+        return try response.ok.body.json.result
+    }
+    
+    public func version(for pluginName: String, versionName: String) async throws -> PluginVersion? {
+        let response = try await client.showVersion(path: .init(slug: pluginName, name: versionName))
+        return try response.ok.body.json
+    }
 
-    public func latestVersion(for pluginName: String) async throws -> String? {
+    public func latestReleaseVersion(for pluginName: String) async throws -> String? {
         let response = try await client.latestReleaseVersion(.init(path: .init(slug: pluginName), headers: .init(accept: [.init(contentType: .plainText)])))
-        switch response {
-        case .ok(let output):
-            let plainText = try output.body.plainText
-            let ret = try await String(collecting: plainText, upTo: 2 * 1024 * 1024)
-            return ret
-        default:
+        guard case let .ok(output) = response
+        else {
             return nil
         }
+        return try await String(collecting: try output.body.plainText, upTo: 2 * 1024 * 1024)
+    }
+    
+    public func downloadPlugin(name: String, version: String, platform: PluginPlatform) async throws -> PluginJavaArchive {
+        let response = try await client.downloadVersion(path: .init(slug: name, name: version, platform: platform))
+        return try response.ok.body.application_java_hyphen_archive
     }
 }
