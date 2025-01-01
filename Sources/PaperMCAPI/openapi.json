@@ -1,7 +1,8 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "PaperMC API"
+        "title": "PaperMC API",
+        "version": "1.0"
     },
     "servers": [
         {
