@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "version": "1.0",
         "title": "Hangar API",
-        "description": "This page describes the format for the current Hangar REST API as well as general usage guidelines.\u003Cbr\u003E\nNote that all routes **not** listed here should be considered **internal**, and can change at a moment's notice. **Do not use them**.\n\n## Authentication and Authorization\nThere are two ways to consume the API: Authenticated or anonymous.\n\n### Anonymous\nWhen using anonymous authentication, you only have access to public information, but you don't need to worry about creating and storing an API key or handing JWTs.\n\n### Authenticated\nIf you need access to non-public content or actions, you need to create and use API keys.\nThese can be created by going to the API keys page via the profile dropdown or by going to your user page and clicking on the key icon.\n\nAPI keys allow you to impersonate yourself, so they should be handled like passwords. **Do not share them with anyone else!**\n\n#### Getting and Using a JWT\nOnce you have an API key, you need to authenticate yourself: Send a `POST` request with your API key identifier to `/api/v1/authenticate?apiKey=yourKey`.\nThe response will contain your JWT as well as an expiration time.\nPut this JWT into the `Authorization` header of every request and make sure to request a new JWT after the expiration time has passed.\n\nPlease also set a meaningful `User-Agent` header. This allows us to better identify loads and needs for potentially new endpoints.\n\n## Misc\n### Date Formats\nStandard ISO types. Where possible, we use the [OpenAPI format modifier](https://swagger.io/docs/specification/data-models/data-types/#format).\n\n### Rate Limits and Caching\nThe default rate limit is set at 20 requests every 5 seconds with an initial overdraft for extra leniency.\nIndividual endpoints, such as version creation, may have stricter rate limiting.\n\nIf applicable, always cache responses. The Hangar API itself is cached by CloudFlare and internally."
+        "description": "This page describes the format for the current Hangar REST API as well as general usage guidelines.\u003Cbr\u003E\nNote that all routes **not** listed here should be considered **internal**, and can change at a moment's notice. **Do not use them**.\n\n## Authentication and Authorization\nThere are two ways to consume the API: Authenticated or anonymous.\n\n### Anonymous\nWhen using anonymous authentication, you only have access to public information, but you don't need to worry about creating and storing an API key or handing JWTs.\n\n### Authenticated\nIf you need access to non-public content or actions, you need to create and use API keys.\nThese can be created by going to the API keys page via the profile dropdown or by going to your user page and clicking on the key icon.\n\nAPI keys allow you to impersonate yourself, so they should be handled like passwords. **Do not share them with anyone else!**\n\n#### Getting and Using a JWT\nOnce you have an API key, you need to authenticate yourself: Send a `POST` request with your API key identifier to `/api/v1/authenticate?apiKey=yourKey`.\nThe response will contain your JWT as well as an expiration time.\nPut this JWT into the `Authorization` header of every request and make sure to request a new JWT after the expiration time has passed.\n\nPlease also set a meaningful `User-Agent` header. This allows us to better identify loads and needs for potentially new endpoints.\n\n## Misc\n### Date Formats\nStandard ISO types. Where possible, we use the [OpenAPI format modifier](https://swagger.io/docs/specification/data-models/data-types/#format).\n\n### Rate Limits and Caching\nThe default rate limit is set at 20 requests every 5 seconds with an initial overdraft for extra leniency.\nIndividual endpoints, such as version creation, may have stricter rate limiting.\n\nIf applicable, always cache responses. The Hangar API itself is cached by CloudFlare and internally.",
+        "version": "1.0"
     },
     "servers": [
         {
@@ -32,7 +32,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
@@ -50,7 +49,7 @@
                                         }
                                     },
                                     "versionUpload": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.internal.versions.VersionUpload"
+                                        "$ref": "#/components/schemas/VersionUpload"
                                     }
                                 }
                             },
@@ -63,12 +62,12 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Ok",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.UploadedVersion"
+                                    "$ref": "#/components/schemas/UploadedVersion"
                                 }
                             }
                         }
@@ -78,7 +77,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.UploadedVersion"
+                                    "$ref": "#/components/schemas/UploadedVersion"
                                 }
                             }
                         }
@@ -88,7 +87,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.UploadedVersion"
+                                    "$ref": "#/components/schemas/UploadedVersion"
                                 }
                             }
                         }
@@ -130,7 +129,6 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
@@ -148,7 +146,7 @@
                                         }
                                     },
                                     "versionUpload": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.internal.versions.VersionUpload"
+                                        "$ref": "#/components/schemas/VersionUpload"
                                     }
                                 }
                             }
@@ -161,7 +159,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.UploadedVersion"
+                                    "$ref": "#/components/schemas/UploadedVersion"
                                 }
                             }
                         }
@@ -180,11 +178,14 @@
                 "operationId": "getKeys",
                 "responses": {
                     "200": {
-                        "description": "Key created",
+                        "description": "The keys",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.ApiKey"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ApiKey"
+                                    }
                                 }
                             }
                         }
@@ -196,7 +197,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.ApiKey"
+                                        "$ref": "#/components/schemas/ApiKey"
                                     }
                                 }
                             }
@@ -209,7 +210,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.ApiKey"
+                                        "$ref": "#/components/schemas/ApiKey"
                                     }
                                 }
                             }
@@ -235,7 +236,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.internal.api.requests.CreateAPIKeyForm"
+                                "$ref": "#/components/schemas/CreateAPIKeyForm"
                             }
                         }
                     },
@@ -344,7 +345,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.auth.ApiSession"
+                                    "$ref": "#/components/schemas/ApiSession"
                                 }
                             }
                         }
@@ -354,7 +355,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.auth.ApiSession"
+                                    "$ref": "#/components/schemas/ApiSession"
                                 }
                             }
                         }
@@ -364,7 +365,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.auth.ApiSession"
+                                    "$ref": "#/components/schemas/ApiSession"
                                 }
                             }
                         }
@@ -395,7 +396,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.internal.api.requests.StringContent"
+                                "$ref": "#/components/schemas/StringContent"
                             }
                         }
                     },
@@ -444,7 +445,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.PageEditForm"
+                                "$ref": "#/components/schemas/PageEditForm"
                             }
                         }
                     },
@@ -465,6 +466,65 @@
                     {
                         "HangarAuth": [
                             "edit_page"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/v1/versions/hash/{hash}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Returns project of the first version that matches the given file hash (SHA-256)",
+                "operationId": "projectByVersionHash",
+                "parameters": [
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "The SHA-256 hash of the version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Api session missing, invalid or expired",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Not enough permissions to use this endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HangarAuth": [
+                            "view_public_info"
                         ]
                     }
                 ]
@@ -494,7 +554,24 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "createdAt",
+                                "projectCount",
+                                "locked",
+                                "org",
+                                "roles"
+                            ]
                         }
                     }
                 ],
@@ -504,7 +581,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -514,7 +591,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -524,7 +601,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -564,7 +641,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -574,7 +651,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -584,7 +661,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -618,21 +695,31 @@
                         }
                     },
                     {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "How to sort the projects",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectSortingStrategy"
-                        }
-                    },
-                    {
                         "name": "pagination",
                         "in": "query",
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "views",
+                                "downloads",
+                                "newest",
+                                "stars",
+                                "updated",
+                                "recent_downloads",
+                                "recent_views",
+                                "slug"
+                            ]
                         }
                     }
                 ],
@@ -642,7 +729,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -652,7 +739,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -662,7 +749,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -696,21 +783,31 @@
                         }
                     },
                     {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "How to sort the projects",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectSortingStrategy"
-                        }
-                    },
-                    {
                         "name": "pagination",
                         "in": "query",
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "views",
+                                "downloads",
+                                "newest",
+                                "stars",
+                                "updated",
+                                "recent_downloads",
+                                "recent_views",
+                                "slug"
+                            ]
                         }
                     }
                 ],
@@ -720,7 +817,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -730,7 +827,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -740,7 +837,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectCompact"
                                 }
                             }
                         }
@@ -782,7 +879,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectCompact"
+                                        "$ref": "#/components/schemas/ProjectCompact"
                                     }
                                 }
                             }
@@ -795,7 +892,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectCompact"
+                                        "$ref": "#/components/schemas/ProjectCompact"
                                     }
                                 }
                             }
@@ -808,7 +905,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectCompact"
+                                        "$ref": "#/components/schemas/ProjectCompact"
                                     }
                                 }
                             }
@@ -848,7 +945,21 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "createdAt",
+                                "roles"
+                            ]
                         }
                     }
                 ],
@@ -858,7 +969,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -868,7 +979,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -878,7 +989,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -918,7 +1029,108 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "views",
+                                "downloads",
+                                "newest",
+                                "stars",
+                                "updated",
+                                "recent_downloads",
+                                "recent_views",
+                                "slug"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "A category to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "platform",
+                        "in": "query",
+                        "description": "A platform to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "The author of the project",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Deprecated: Use 'query' instead",
+                        "deprecated": true,
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The query to use when searching",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "license",
+                        "in": "query",
+                        "description": "A license to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version",
+                        "in": "query",
+                        "description": "A platform version to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "A tag to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "member",
+                        "in": "query",
+                        "description": "The member of the project",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -928,7 +1140,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/PaginatedResultProject"
                                 }
                             }
                         }
@@ -938,7 +1150,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/PaginatedResultProject"
                                 }
                             }
                         }
@@ -948,7 +1160,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/PaginatedResultProject"
                                 }
                             }
                         }
@@ -988,7 +1200,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/Project"
                                 }
                             }
                         }
@@ -998,7 +1210,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/Project"
                                 }
                             }
                         }
@@ -1008,7 +1220,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.Project"
+                                    "$ref": "#/components/schemas/Project"
                                 }
                             }
                         }
@@ -1047,7 +1259,7 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
                         }
                     }
                 ],
@@ -1057,7 +1269,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1067,7 +1279,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1077,7 +1289,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1116,7 +1328,7 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
                         }
                     },
                     {
@@ -1128,6 +1340,24 @@
                             "type": "boolean",
                             "default": true
                         }
+                    },
+                    {
+                        "name": "channel",
+                        "in": "query",
+                        "description": "A name of a version channel to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "platform",
+                        "in": "query",
+                        "description": "A platform name to filter for",
+                        "style": "form",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -1136,7 +1366,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/PaginatedResultVersion"
                                 }
                             }
                         }
@@ -1146,7 +1376,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/PaginatedResultVersion"
                                 }
                             }
                         }
@@ -1156,7 +1386,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/PaginatedResultVersion"
                                 }
                             }
                         }
@@ -1205,7 +1435,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/Version"
                                 }
                             }
                         }
@@ -1215,7 +1445,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/Version"
                                 }
                             }
                         }
@@ -1225,7 +1455,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/Version"
                                 }
                             }
                         }
@@ -1273,7 +1503,7 @@
                         "description": "The platform of the version to download",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.Platform"
+                            "$ref": "#/components/schemas/Platform"
                         }
                     }
                 ],
@@ -1282,6 +1512,11 @@
                         "description": "Ok",
                         "content": {
                             "application/octet-stream": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "object"
                                 }
@@ -1295,6 +1530,11 @@
                                 "schema": {
                                     "type": "object"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
                             }
                         }
                     },
@@ -1302,6 +1542,11 @@
                         "description": "Version doesn't have a file attached to it",
                         "content": {
                             "application/octet-stream": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "object"
                                 }
@@ -1315,6 +1560,11 @@
                                 "schema": {
                                     "type": "object"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
                             }
                         }
                     },
@@ -1322,6 +1572,11 @@
                         "description": "Not enough permissions to use this endpoint",
                         "content": {
                             "application/octet-stream": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "object"
                                 }
@@ -1394,7 +1649,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionStats"
+                                        "$ref": "#/components/schemas/VersionStats"
                                     }
                                 }
                             }
@@ -1407,7 +1662,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionStats"
+                                        "$ref": "#/components/schemas/VersionStats"
                                     }
                                 }
                             }
@@ -1420,7 +1675,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionStats"
+                                        "$ref": "#/components/schemas/VersionStats"
                                     }
                                 }
                             }
@@ -1483,7 +1738,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.DayProjectStats"
+                                        "$ref": "#/components/schemas/DayProjectStats"
                                     }
                                 }
                             }
@@ -1496,7 +1751,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.DayProjectStats"
+                                        "$ref": "#/components/schemas/DayProjectStats"
                                     }
                                 }
                             }
@@ -1509,7 +1764,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.DayProjectStats"
+                                        "$ref": "#/components/schemas/DayProjectStats"
                                     }
                                 }
                             }
@@ -1549,7 +1804,7 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
                         }
                     }
                 ],
@@ -1559,7 +1814,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1569,7 +1824,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1579,7 +1834,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -1618,7 +1873,7 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
                         }
                     }
                 ],
@@ -1628,7 +1883,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectMember"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectMember"
                                 }
                             }
                         }
@@ -1638,7 +1893,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectMember"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectMember"
                                 }
                             }
                         }
@@ -1648,7 +1903,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectMember"
+                                    "$ref": "#/components/schemas/PaginatedResultProjectMember"
                                 }
                             }
                         }
@@ -1700,6 +1955,11 @@
                                 "schema": {
                                     "type": "string"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     },
@@ -1707,6 +1967,11 @@
                         "description": "Not enough permissions to use this endpoint",
                         "content": {
                             "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -1769,6 +2034,11 @@
                                 "schema": {
                                     "type": "string"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     },
@@ -1776,6 +2046,11 @@
                         "description": "Not enough permissions to use this endpoint",
                         "content": {
                             "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -1823,7 +2098,7 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
                         }
                     }
                 ],
@@ -1833,7 +2108,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/PaginatedResultVersion"
                                 }
                             }
                         }
@@ -1883,7 +2158,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.Version"
+                                    "$ref": "#/components/schemas/Version"
                                 }
                             }
                         }
@@ -1932,7 +2207,7 @@
                         "description": "The platform of the version to download",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.Platform"
+                            "$ref": "#/components/schemas/Platform"
                         }
                     }
                 ],
@@ -1941,6 +2216,11 @@
                         "description": "OK",
                         "content": {
                             "application/octet-stream": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "object"
                                 }
@@ -2014,7 +2294,7 @@
                                 "schema": {
                                     "type": "object",
                                     "additionalProperties": {
-                                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionStats"
+                                        "$ref": "#/components/schemas/VersionStats"
                                     }
                                 }
                             }
@@ -2055,6 +2335,11 @@
                         "description": "OK",
                         "content": {
                             "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -2108,6 +2393,11 @@
                                 "schema": {
                                     "type": "string"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     }
@@ -2149,7 +2439,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.UserPermissions"
+                                    "$ref": "#/components/schemas/UserPermissions"
                                 }
                             }
                         }
@@ -2159,7 +2449,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.UserPermissions"
+                                    "$ref": "#/components/schemas/UserPermissions"
                                 }
                             }
                         }
@@ -2169,7 +2459,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.UserPermissions"
+                                    "$ref": "#/components/schemas/UserPermissions"
                                 }
                             }
                         }
@@ -2202,7 +2492,7 @@
                             "uniqueItems": true,
                             "type": "array",
                             "items": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.common.NamedPermission"
+                                "$ref": "#/components/schemas/NamedPermission"
                             }
                         }
                     },
@@ -2231,7 +2521,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2241,7 +2531,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2251,7 +2541,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2286,7 +2576,7 @@
                             "uniqueItems": true,
                             "type": "array",
                             "items": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.common.NamedPermission"
+                                "$ref": "#/components/schemas/NamedPermission"
                             }
                         }
                     },
@@ -2315,7 +2605,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2325,7 +2615,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2335,7 +2625,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.permissions.PermissionCheck"
+                                    "$ref": "#/components/schemas/PermissionCheck"
                                 }
                             }
                         }
@@ -2396,6 +2686,11 @@
                                 "schema": {
                                     "type": "string"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     },
@@ -2403,6 +2698,11 @@
                         "description": "Not enough permissions to use this endpoint",
                         "content": {
                             "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -2449,6 +2749,11 @@
                                 "schema": {
                                     "type": "string"
                                 }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
                     },
@@ -2456,6 +2761,11 @@
                         "description": "Not enough permissions to use this endpoint",
                         "content": {
                             "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -2489,7 +2799,21 @@
                         "description": "Pagination information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.requests.RequestPagination"
+                            "$ref": "#/components/schemas/RequestPagination"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Used to sort the result",
+                        "style": "form",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "createdAt",
+                                "projectCount"
+                            ]
                         }
                     }
                 ],
@@ -2499,7 +2823,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -2509,7 +2833,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -2519,7 +2843,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User"
+                                    "$ref": "#/components/schemas/PaginatedResultUser"
                                 }
                             }
                         }
@@ -2537,7 +2861,36 @@
     },
     "components": {
         "schemas": {
-            "io.papermc.hangar.model.api.project.version.PluginDependency": {
+            "MultipartFileOrUrl": {
+                "type": "object",
+                "properties": {
+                    "platforms": {
+                        "type": "array",
+                        "description": "List of platforms this jar runs on",
+                        "example": "[PAPER, WATERFALL, VELOCITY]",
+                        "items": {
+                            "$ref": "#/components/schemas/Platform"
+                        }
+                    },
+                    "externalUrl": {
+                        "type": "string",
+                        "description": "External url to download the jar from if not provided via an attached jar, else null",
+                        "example": "https://papermc.io/downloads"
+                    }
+                },
+                "description": "List of different jars/external links that are part of the version"
+            },
+            "Platform": {
+                "type": "string",
+                "description": "Server platform",
+                "example": "PAPER",
+                "enum": [
+                    "PAPER",
+                    "WATERFALL",
+                    "VELOCITY"
+                ]
+            },
+            "PluginDependency": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -2555,41 +2908,12 @@
                         "example": "https://papermc.io/downloads"
                     },
                     "platform": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.Platform"
+                        "$ref": "#/components/schemas/Platform"
                     }
                 },
                 "description": "Map of each platform's plugin dependencies"
             },
-            "io.papermc.hangar.model.common.Platform": {
-                "type": "string",
-                "description": "Server platform",
-                "example": "PAPER",
-                "enum": [
-                    "PAPER",
-                    "WATERFALL",
-                    "VELOCITY"
-                ]
-            },
-            "io.papermc.hangar.model.internal.versions.MultipartFileOrUrl": {
-                "type": "object",
-                "properties": {
-                    "platforms": {
-                        "type": "array",
-                        "description": "List of platforms this jar runs on",
-                        "example": "[PAPER, WATERFALL, VELOCITY]",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.Platform"
-                        }
-                    },
-                    "externalUrl": {
-                        "type": "string",
-                        "description": "External url to download the jar from if not provided via an attached jar, else null",
-                        "example": "https://papermc.io/downloads"
-                    }
-                },
-                "description": "List of different jars/external links that are part of the version"
-            },
-            "io.papermc.hangar.model.internal.versions.VersionUpload": {
+            "VersionUpload": {
                 "required": [
                     "channel",
                     "version"
@@ -2608,7 +2932,7 @@
                             "type": "array",
                             "description": "Map of each platform's plugin dependencies",
                             "items": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.PluginDependency"
+                                "$ref": "#/components/schemas/PluginDependency"
                             }
                         },
                         "description": "Map of each platform's plugin dependencies"
@@ -2637,7 +2961,7 @@
                         "minItems": 1,
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.internal.versions.MultipartFileOrUrl"
+                            "$ref": "#/components/schemas/MultipartFileOrUrl"
                         }
                     },
                     "channel": {
@@ -2648,7 +2972,7 @@
                 },
                 "description": "Version data. See the VersionUpload schema for more info"
             },
-            "io.papermc.hangar.model.api.project.version.UploadedVersion": {
+            "UploadedVersion": {
                 "type": "object",
                 "properties": {
                     "url": {
@@ -2659,7 +2983,31 @@
                 },
                 "description": "A version that has been uploaded"
             },
-            "io.papermc.hangar.model.common.NamedPermission": {
+            "CreateAPIKeyForm": {
+                "required": [
+                    "name",
+                    "permissions"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "maximum": 36,
+                        "minimum": 5,
+                        "maxLength": 36,
+                        "minLength": 5,
+                        "type": "string"
+                    },
+                    "permissions": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NamedPermission"
+                        }
+                    }
+                },
+                "description": "Data about the key to create"
+            },
+            "NamedPermission": {
                 "type": "string",
                 "enum": [
                     "view_public_info",
@@ -2695,31 +3043,7 @@
                     "edit_all_user_settings"
                 ]
             },
-            "io.papermc.hangar.model.internal.api.requests.CreateAPIKeyForm": {
-                "required": [
-                    "name",
-                    "permissions"
-                ],
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "maximum": 36,
-                        "minimum": 5,
-                        "maxLength": 36,
-                        "minLength": 5,
-                        "type": "string"
-                    },
-                    "permissions": {
-                        "uniqueItems": true,
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.NamedPermission"
-                        }
-                    }
-                },
-                "description": "Data about the key to create"
-            },
-            "io.papermc.hangar.model.api.auth.ApiSession": {
+            "ApiSession": {
                 "type": "object",
                 "properties": {
                     "token": {
@@ -2733,7 +3057,7 @@
                     }
                 }
             },
-            "io.papermc.hangar.model.internal.api.requests.StringContent": {
+            "StringContent": {
                 "required": [
                     "content"
                 ],
@@ -2746,7 +3070,7 @@
                 },
                 "description": "The path and new contents of the page"
             },
-            "io.papermc.hangar.model.api.project.PageEditForm": {
+            "PageEditForm": {
                 "required": [
                     "content",
                     "path"
@@ -2762,153 +3086,69 @@
                 },
                 "description": "The path and new contents of the page"
             },
-            "io.papermc.hangar.model.api.requests.RequestPagination": {
+            "Category": {
+                "type": "string",
+                "description": "The category of the project",
+                "enum": [
+                    "admin_tools",
+                    "chat",
+                    "dev_tools",
+                    "economy",
+                    "gameplay",
+                    "games",
+                    "protection",
+                    "role_playing",
+                    "world_management",
+                    "misc",
+                    "undefined"
+                ]
+            },
+            "Link": {
+                "required": [
+                    "url"
+                ],
                 "type": "object",
                 "properties": {
-                    "limit": {
-                        "maximum": 25,
-                        "minimum": 1,
-                        "type": "integer",
-                        "description": "The maximum amount of items to return",
-                        "format": "int64",
-                        "example": 1
-                    },
-                    "offset": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "description": "Where to start searching",
-                        "format": "int64",
-                        "example": 0
-                    }
-                }
-            },
-            "com.fasterxml.jackson.databind.JsonNode": {
-                "type": "object"
-            },
-            "io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.User": {
-                "type": "object",
-                "properties": {
-                    "pagination": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.Pagination"
-                    },
-                    "result": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.User"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.Pagination": {
-                "type": "object",
-                "properties": {
-                    "limit": {
-                        "maximum": 25,
-                        "minimum": 1,
-                        "type": "integer",
-                        "description": "The maximum amount of items to return",
-                        "format": "int64",
-                        "example": 1
-                    },
-                    "offset": {
-                        "minimum": 0,
-                        "type": "integer",
-                        "description": "Where to start searching",
-                        "format": "int64",
-                        "example": 0
-                    },
-                    "count": {
+                    "id": {
                         "type": "integer",
                         "format": "int64"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.User": {
-                "type": "object",
-                "properties": {
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
                     },
                     "name": {
                         "type": "string"
                     },
-                    "tagline": {
+                    "url": {
                         "type": "string"
-                    },
-                    "roles": {
-                        "type": "array",
-                        "items": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    },
-                    "projectCount": {
+                    }
+                }
+            },
+            "LinkSection": {
+                "required": [
+                    "links",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
                         "type": "integer",
                         "format": "int64"
                     },
-                    "locked": {
-                        "type": "boolean"
-                    },
-                    "nameHistory": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.UserNameChange"
-                        }
-                    },
-                    "avatarUrl": {
-                        "type": "string"
-                    },
-                    "socials": {
-                        "$ref": "#/components/schemas/com.fasterxml.jackson.databind.JsonNode"
-                    },
-                    "isOrganization": {
-                        "type": "boolean"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.UserNameChange": {
-                "type": "object",
-                "properties": {
-                    "oldName": {
-                        "type": "string"
-                    },
-                    "newName": {
-                        "type": "string"
-                    },
-                    "date": {
+                    "type": {
                         "type": "string",
-                        "format": "date-time"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.ProjectSortingStrategy": {
-                "type": "string",
-                "enum": [
-                    "stars",
-                    "downloads",
-                    "views",
-                    "newest",
-                    "updated",
-                    "recent_views",
-                    "recent_downloads"
-                ]
-            },
-            "io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectCompact": {
-                "type": "object",
-                "properties": {
-                    "pagination": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.Pagination"
+                        "description": "Type of the link. Either SIDEBAR or TOP",
+                        "example": "TOP"
                     },
-                    "result": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "links": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectCompact"
+                            "$ref": "#/components/schemas/Link"
                         }
                     }
                 }
             },
-            "io.papermc.hangar.model.api.project.ProjectCompact": {
+            "Project": {
                 "type": "object",
                 "properties": {
                     "createdAt": {
@@ -2920,13 +3160,13 @@
                         "description": "The unique name of the project"
                     },
                     "namespace": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectNamespace"
+                        "$ref": "#/components/schemas/ProjectNamespace"
                     },
                     "stats": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectStats"
+                        "$ref": "#/components/schemas/ProjectStats"
                     },
                     "category": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.Category"
+                        "$ref": "#/components/schemas/Category"
                     },
                     "lastUpdated": {
                         "type": "string",
@@ -2934,15 +3174,50 @@
                         "format": "date-time"
                     },
                     "visibility": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.Visibility"
+                        "$ref": "#/components/schemas/Visibility"
                     },
                     "avatarUrl": {
                         "type": "string",
                         "description": "The url to the project's icon"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "The short description of the project"
+                    },
+                    "userActions": {
+                        "$ref": "#/components/schemas/UserActions"
+                    },
+                    "settings": {
+                        "$ref": "#/components/schemas/ProjectSettings"
                     }
                 }
             },
-            "io.papermc.hangar.model.api.project.ProjectNamespace": {
+            "ProjectDonationSettings": {
+                "type": "object",
+                "properties": {
+                    "enable": {
+                        "type": "boolean"
+                    },
+                    "subject": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProjectLicense": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProjectNamespace": {
                 "type": "object",
                 "properties": {
                     "owner": {
@@ -2956,7 +3231,45 @@
                 },
                 "description": "The namespace of the project"
             },
-            "io.papermc.hangar.model.api.project.ProjectStats": {
+            "ProjectSettings": {
+                "required": [
+                    "keywords",
+                    "links",
+                    "tags"
+                ],
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LinkSection"
+                        }
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tag"
+                        }
+                    },
+                    "license": {
+                        "$ref": "#/components/schemas/ProjectLicense"
+                    },
+                    "keywords": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "sponsors": {
+                        "type": "string"
+                    },
+                    "donation": {
+                        "$ref": "#/components/schemas/ProjectDonationSettings"
+                    }
+                },
+                "description": "The settings of the project"
+            },
+            "ProjectStats": {
                 "type": "object",
                 "properties": {
                     "views": {
@@ -2986,119 +3299,15 @@
                 },
                 "description": "Stats of the project"
             },
-            "io.papermc.hangar.model.common.projects.Category": {
+            "Tag": {
                 "type": "string",
-                "description": "The category of the project",
                 "enum": [
-                    "admin_tools",
-                    "chat",
-                    "dev_tools",
-                    "economy",
-                    "gameplay",
-                    "games",
-                    "protection",
-                    "role_playing",
-                    "world_management",
-                    "misc",
-                    "undefined"
+                    "ADDON",
+                    "LIBRARY",
+                    "SUPPORTS_FOLIA"
                 ]
             },
-            "io.papermc.hangar.model.common.projects.Visibility": {
-                "type": "string",
-                "description": "The visibility of a project or version",
-                "example": "PUBLIC",
-                "enum": [
-                    "public",
-                    "new",
-                    "needsChanges",
-                    "needsApproval",
-                    "softDelete"
-                ]
-            },
-            "io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.Project": {
-                "type": "object",
-                "properties": {
-                    "pagination": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.Pagination"
-                    },
-                    "result": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.Project"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.Project": {
-                "type": "object",
-                "properties": {
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "The unique name of the project"
-                    },
-                    "namespace": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectNamespace"
-                    },
-                    "stats": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectStats"
-                    },
-                    "category": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.Category"
-                    },
-                    "lastUpdated": {
-                        "type": "string",
-                        "description": "The last time the project was updated",
-                        "format": "date-time"
-                    },
-                    "visibility": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.Visibility"
-                    },
-                    "avatarUrl": {
-                        "type": "string",
-                        "description": "The url to the project's icon"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "The short description of the project"
-                    },
-                    "userActions": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.UserActions"
-                    },
-                    "settings": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.settings.ProjectSettings"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.ProjectDonationSettings": {
-                "type": "object",
-                "properties": {
-                    "enable": {
-                        "type": "boolean"
-                    },
-                    "subject": {
-                        "type": "string"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.ProjectLicense": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    },
-                    "type": {
-                        "type": "string"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.UserActions": {
+            "UserActions": {
                 "type": "object",
                 "properties": {
                     "starred": {
@@ -3113,109 +3322,80 @@
                 },
                 "description": "Information about your interactions with the project"
             },
-            "io.papermc.hangar.model.api.project.settings.Link": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.settings.LinkSection": {
-                "required": [
-                    "links",
-                    "type"
-                ],
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "type": {
-                        "type": "string",
-                        "description": "Type of the link. Either SIDEBAR or TOP",
-                        "example": "TOP"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "links": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.settings.Link"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.settings.ProjectSettings": {
-                "required": [
-                    "keywords",
-                    "links",
-                    "tags"
-                ],
-                "type": "object",
-                "properties": {
-                    "links": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.settings.LinkSection"
-                        }
-                    },
-                    "tags": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.settings.Tag"
-                        }
-                    },
-                    "license": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectLicense"
-                    },
-                    "keywords": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "sponsors": {
-                        "type": "string"
-                    },
-                    "donation": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectDonationSettings"
-                    }
-                },
-                "description": "The settings of the project"
-            },
-            "io.papermc.hangar.model.api.project.settings.Tag": {
+            "Visibility": {
                 "type": "string",
+                "description": "The visibility of a project or version",
+                "example": "PUBLIC",
                 "enum": [
-                    "ADDON",
-                    "LIBRARY",
-                    "SUPPORTS_FOLIA"
+                    "public",
+                    "new",
+                    "needsChanges",
+                    "needsApproval",
+                    "softDelete"
                 ]
             },
-            "io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.version.Version": {
+            "RequestPagination": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "maximum": 25,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "The maximum amount of items to return",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "offset": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Where to start searching",
+                        "format": "int64",
+                        "example": 0
+                    }
+                }
+            },
+            "JsonNode": {
+                "type": "object"
+            },
+            "PaginatedResultUser": {
                 "type": "object",
                 "properties": {
                     "pagination": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.Pagination"
+                        "$ref": "#/components/schemas/Pagination"
                     },
                     "result": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.Version"
+                            "$ref": "#/components/schemas/User"
                         }
                     }
                 }
             },
-            "io.papermc.hangar.model.api.project.ProjectChannel": {
+            "Pagination": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "maximum": 25,
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "The maximum amount of items to return",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "offset": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Where to start searching",
+                        "format": "int64",
+                        "example": 0
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "User": {
                 "type": "object",
                 "properties": {
                     "createdAt": {
@@ -3225,142 +3405,122 @@
                     "name": {
                         "type": "string"
                     },
-                    "description": {
+                    "tagline": {
                         "type": "string"
                     },
-                    "color": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.Color"
-                    },
-                    "flags": {
-                        "uniqueItems": true,
+                    "roles": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.ChannelFlag"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.version.FileInfo": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "sizeBytes": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "sha256Hash": {
-                        "type": "string"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.version.PlatformVersionDownload": {
-                "type": "object",
-                "properties": {
-                    "fileInfo": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.FileInfo"
-                    },
-                    "externalUrl": {
-                        "type": "string",
-                        "description": "External download url if not directly uploaded to Hangar"
-                    },
-                    "downloadUrl": {
-                        "type": "string",
-                        "description": "Hangar download url if not an external download"
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.version.Version": {
-                "type": "object",
-                "properties": {
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "visibility": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.Visibility"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "stats": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionStats"
-                    },
-                    "author": {
-                        "type": "string"
-                    },
-                    "reviewState": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.projects.ReviewState"
-                    },
-                    "channel": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectChannel"
-                    },
-                    "pinnedStatus": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.VersionCompact.PinnedStatus"
-                    },
-                    "downloads": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.PlatformVersionDownload"
-                        }
-                    },
-                    "pluginDependencies": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "uniqueItems": true,
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.version.PluginDependency"
-                            }
-                        }
-                    },
-                    "platformDependencies": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "uniqueItems": true,
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "platformDependenciesFormatted": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.version.VersionCompact.PinnedStatus": {
-                "type": "string",
-                "enum": [
-                    "NONE",
-                    "VERSION",
-                    "CHANNEL"
-                ]
-            },
-            "io.papermc.hangar.model.api.project.version.VersionStats": {
-                "type": "object",
-                "properties": {
-                    "totalDownloads": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "platformDownloads": {
-                        "type": "object",
-                        "additionalProperties": {
                             "type": "integer",
                             "format": "int64"
                         }
+                    },
+                    "projectCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "locked": {
+                        "type": "boolean"
+                    },
+                    "nameHistory": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserNameChange"
+                        }
+                    },
+                    "avatarUrl": {
+                        "type": "string"
+                    },
+                    "socials": {
+                        "$ref": "#/components/schemas/JsonNode"
+                    },
+                    "isOrganization": {
+                        "type": "boolean"
                     }
                 }
             },
-            "io.papermc.hangar.model.common.ChannelFlag": {
+            "UserNameChange": {
+                "type": "object",
+                "properties": {
+                    "oldName": {
+                        "type": "string"
+                    },
+                    "newName": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "PaginatedResultProjectCompact": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                    },
+                    "result": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectCompact"
+                        }
+                    }
+                }
+            },
+            "ProjectCompact": {
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The unique name of the project"
+                    },
+                    "namespace": {
+                        "$ref": "#/components/schemas/ProjectNamespace"
+                    },
+                    "stats": {
+                        "$ref": "#/components/schemas/ProjectStats"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/Category"
+                    },
+                    "lastUpdated": {
+                        "type": "string",
+                        "description": "The last time the project was updated",
+                        "format": "date-time"
+                    },
+                    "visibility": {
+                        "$ref": "#/components/schemas/Visibility"
+                    },
+                    "avatarUrl": {
+                        "type": "string",
+                        "description": "The url to the project's icon"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "The short description of the project"
+                    }
+                }
+            },
+            "PaginatedResultProject": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                    },
+                    "result": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Project"
+                        }
+                    }
+                }
+            },
+            "ChannelFlag": {
                 "type": "string",
                 "enum": [
                     "FROZEN",
@@ -3370,7 +3530,7 @@
                     "HIDE_BY_DEFAULT"
                 ]
             },
-            "io.papermc.hangar.model.common.Color": {
+            "Color": {
                 "type": "string",
                 "enum": [
                     "#B400FF",
@@ -3393,7 +3553,85 @@
                     "transparent"
                 ]
             },
-            "io.papermc.hangar.model.common.projects.ReviewState": {
+            "FileInfo": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "sizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "sha256Hash": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaginatedResultVersion": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
+                    },
+                    "result": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Version"
+                        }
+                    }
+                }
+            },
+            "PinnedStatus": {
+                "type": "string",
+                "enum": [
+                    "NONE",
+                    "VERSION",
+                    "CHANNEL"
+                ]
+            },
+            "PlatformVersionDownload": {
+                "type": "object",
+                "properties": {
+                    "fileInfo": {
+                        "$ref": "#/components/schemas/FileInfo"
+                    },
+                    "externalUrl": {
+                        "type": "string",
+                        "description": "External download url if not directly uploaded to Hangar"
+                    },
+                    "downloadUrl": {
+                        "type": "string",
+                        "description": "Hangar download url if not an external download"
+                    }
+                }
+            },
+            "ProjectChannel": {
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "$ref": "#/components/schemas/Color"
+                    },
+                    "flags": {
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChannelFlag"
+                        }
+                    }
+                }
+            },
+            "ReviewState": {
                 "type": "string",
                 "enum": [
                     "unreviewed",
@@ -3402,7 +3640,91 @@
                     "partially_reviewed"
                 ]
             },
-            "io.papermc.hangar.model.api.project.DayProjectStats": {
+            "Version": {
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "$ref": "#/components/schemas/Visibility"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "stats": {
+                        "$ref": "#/components/schemas/VersionStats"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "reviewState": {
+                        "$ref": "#/components/schemas/ReviewState"
+                    },
+                    "channel": {
+                        "$ref": "#/components/schemas/ProjectChannel"
+                    },
+                    "pinnedStatus": {
+                        "$ref": "#/components/schemas/PinnedStatus"
+                    },
+                    "downloads": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/PlatformVersionDownload"
+                        }
+                    },
+                    "pluginDependencies": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "uniqueItems": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/PluginDependency"
+                            }
+                        }
+                    },
+                    "platformDependencies": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "uniqueItems": true,
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "platformDependenciesFormatted": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "VersionStats": {
+                "type": "object",
+                "properties": {
+                    "totalDownloads": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "platformDownloads": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                }
+            },
+            "DayProjectStats": {
                 "type": "object",
                 "properties": {
                     "views": {
@@ -3415,42 +3737,14 @@
                     }
                 }
             },
-            "io.papermc.hangar.model.api.PaginatedResultIo.papermc.hangar.model.api.project.ProjectMember": {
-                "type": "object",
-                "properties": {
-                    "pagination": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.api.Pagination"
-                    },
-                    "result": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.api.project.ProjectMember"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.api.project.ProjectMember": {
-                "type": "object",
-                "properties": {
-                    "user": {
-                        "type": "string"
-                    },
-                    "roles": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.roles.CompactRole"
-                        }
-                    }
-                }
-            },
-            "io.papermc.hangar.model.common.roles.CompactRole": {
+            "CompactRole": {
                 "type": "object",
                 "properties": {
                     "title": {
                         "type": "string"
                     },
                     "color": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.Color"
+                        "$ref": "#/components/schemas/Color"
                     },
                     "rank": {
                         "type": "integer",
@@ -3461,24 +3755,35 @@
                     }
                 }
             },
-            "io.papermc.hangar.model.api.permissions.UserPermissions": {
+            "PaginatedResultProjectMember": {
                 "type": "object",
                 "properties": {
-                    "type": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.PermissionType"
+                    "pagination": {
+                        "$ref": "#/components/schemas/Pagination"
                     },
-                    "permissionBinString": {
-                        "type": "string"
-                    },
-                    "permissions": {
+                    "result": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.NamedPermission"
+                            "$ref": "#/components/schemas/ProjectMember"
                         }
                     }
                 }
             },
-            "io.papermc.hangar.model.common.PermissionType": {
+            "ProjectMember": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CompactRole"
+                        }
+                    }
+                }
+            },
+            "PermissionType": {
                 "type": "string",
                 "enum": [
                     "global",
@@ -3486,18 +3791,35 @@
                     "organization"
                 ]
             },
-            "io.papermc.hangar.model.api.permissions.PermissionCheck": {
+            "UserPermissions": {
                 "type": "object",
                 "properties": {
                     "type": {
-                        "$ref": "#/components/schemas/io.papermc.hangar.model.common.PermissionType"
+                        "$ref": "#/components/schemas/PermissionType"
+                    },
+                    "permissionBinString": {
+                        "type": "string"
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NamedPermission"
+                        }
+                    }
+                }
+            },
+            "PermissionCheck": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/PermissionType"
                     },
                     "result": {
                         "type": "boolean"
                     }
                 }
             },
-            "io.papermc.hangar.model.api.ApiKey": {
+            "ApiKey": {
                 "type": "object",
                 "properties": {
                     "createdAt": {
@@ -3513,7 +3835,7 @@
                     "permissions": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/io.papermc.hangar.model.common.NamedPermission"
+                            "$ref": "#/components/schemas/NamedPermission"
                         }
                     },
                     "lastUsed": {
