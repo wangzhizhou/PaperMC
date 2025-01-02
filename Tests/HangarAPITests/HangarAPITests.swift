@@ -54,12 +54,12 @@ final class HangarAPITests {
         "ViaVersion"
     ])
     func versions(name: String) async throws {
-        let versions = try #require(try await client.versions(for: name))
+        let versions = try #require(await client.versions(for: name))
         #expect(!versions.isEmpty)
         
         let firstVersion = try #require(versions.first)
         let firstVersionName = try #require(firstVersion.name)
-        let fetchFirstVersion = try #require(try await client.version(for: name, versionName: firstVersionName))
+        let fetchFirstVersion = try #require(await client.version(for: name, versionName: firstVersionName))
         #expect(fetchFirstVersion == firstVersion)
         
         let httpBody = try await client.downloadPlugin(name: name, version: firstVersionName, platform: .PAPER)
