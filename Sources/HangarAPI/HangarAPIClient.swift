@@ -5,6 +5,7 @@
 //  Created by joker on 2023/6/20.
 //
 import Common
+import Foundation
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -57,5 +58,29 @@ public struct HangarAPIClient {
     public func downloadPlugin(name: String, version: String, platform: PluginPlatform) async throws -> PluginJavaArchive {
         let response = try await client.downloadVersion(path: .init(slug: name, name: version, platform: platform))
         return try response.ok.body.application_java_hyphen_archive
+    }
+    
+    public func downloadPlugin(name: String, version: String, platform: PluginPlatform, toFileURL: URL) async throws -> AsyncStream<Progress>? {
+        let javaArchive = try await downloadPlugin(name: name, version: version, platform: platform)
+        guard case let OpenAPIRuntime.HTTPBody.Length.known(totalBytes) = javaArchive.length, totalBytes > 0
+        else {
+            return nil
+        }
+        return AsyncStream<Progress> { continuation in
+            Task {
+                let progress = Progress(totalUnitCount: totalBytes)
+                if !FileManager.default.fileExists(atPath: toFileURL.path()) {
+                    FileManager.default.createFile(atPath: toFileURL.path(), contents: nil, attributes: nil)
+                }
+                let fileHandle = try FileHandle(forWritingTo: toFileURL)
+                for try await chunks in javaArchive {
+                    try fileHandle.write(contentsOf: chunks)
+                    progress.completedUnitCount += Int64(chunks.count)
+                    continuation.yield(progress)
+                }
+                try fileHandle.close()
+                continuation.finish()
+            }
+        }
     }
 }

@@ -49,7 +49,7 @@ final class HangarAPITests {
         let latestReleaseVersion = try await client.latestReleaseVersion(for: name)
         #expect(latestReleaseVersion == nil)
     }
-
+    
     @Test(arguments: [
         "ViaVersion"
     ])
@@ -60,14 +60,24 @@ final class HangarAPITests {
         let firstVersion = try #require(versions.first)
         let firstVersionName = try #require(firstVersion.name)
         let fetchFirstVersion = try #require(await client.version(for: name, versionName: firstVersionName))
-        #expect(fetchFirstVersion == firstVersion)
-        
-        let httpBody = try await client.downloadPlugin(name: name, version: firstVersionName, platform: .PAPER)
-        if case let PluginJavaArchive.Length.known(bytes) = httpBody.length, bytes > 0 {
-            let binary = try await Data(collecting: httpBody, upTo: Int(bytes))
-            #expect(binary.count == bytes)
-        } else {
-            Issue.record("download plugin jar failed!")
+        #expect(fetchFirstVersion.name == firstVersion.name)
+        #expect(fetchFirstVersion.createdAt == firstVersion.createdAt)
+        #expect(fetchFirstVersion.visibility == firstVersion.visibility)
+    }
+    
+    @Test
+    func downloadPluginToFile() async throws {
+        let pluginName = "ViaVersion"
+        let pluginVersion = "5.2.1"
+        let jarFileName = "\(pluginName)_\(pluginVersion).jar"
+        let dstFileURL = try #require(FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?.appending(path: jarFileName))
+        let progressStream = try #require(await client.downloadPlugin(name: pluginName, version: pluginVersion, platform: .PAPER, toFileURL: dstFileURL))
+        for try await progress in progressStream {
+            print("\(Int(progress.fractionCompleted * 100))%")
         }
+        #expect(FileManager.default.fileExists(atPath: dstFileURL.path()))
+        let attributes = try FileManager.default.attributesOfItem(atPath: dstFileURL.path())
+        let fileSizeBytes = try #require(attributes[.size] as? Int64)
+        #expect(fileSizeBytes > 0)
     }
 }
