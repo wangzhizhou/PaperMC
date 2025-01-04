@@ -83,4 +83,14 @@ public struct HangarAPIClient {
             }
         }
     }
+    
+    public func searchPlugin(text: String, platform: PluginPlatform = .PAPER, pagination: PluginSearchPagination = .init()) async throws -> [PluginProject]? {
+        let response = try await client.getProjects(query: .init(
+            pagination: pagination,
+            platform: platform.rawValue,
+            query: text
+        ))
+        let projects = try response.ok.body.json.result
+        return projects
+    }
 }

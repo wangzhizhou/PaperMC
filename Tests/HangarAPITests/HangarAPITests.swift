@@ -80,4 +80,12 @@ final class HangarAPITests {
         let fileSizeBytes = try #require(attributes[.size] as? Int64)
         #expect(fileSizeBytes > 0)
     }
+    
+    @Test(arguments: [
+        "Via"
+    ])
+    func searchPlugin(text: String) async throws {
+        let projects = try #require(await client.searchPlugin(text: text))
+        #expect(projects.isEmpty == false)
+    }
 }
