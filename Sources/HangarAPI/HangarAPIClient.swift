@@ -36,17 +36,17 @@ public struct HangarAPIClient {
     }
     
     public func versions(for pluginName: String) async throws -> [PluginVersion]? {
-        let response = try await client.listVersions(path: .init(slug: pluginName), query: .init(pagination: .init()))
+        let response = try await client.listVersions(path: .init(slugOrId: pluginName), query: .init(pagination: .init()))
         return try response.ok.body.json.result
     }
     
     public func version(for pluginName: String, versionName: String) async throws -> PluginVersion? {
-        let response = try await client.showVersion(path: .init(slug: pluginName, name: versionName))
+        let response = try await client.showVersion(path: .init(slugOrId: pluginName, nameOrId: versionName))
         return try response.ok.body.json
     }
 
     public func latestReleaseVersion(for pluginName: String) async throws -> String? {
-        let response = try await client.latestReleaseVersion(.init(path: .init(slug: pluginName), headers: .init(accept: [.init(contentType: .plainText)])))
+        let response = try await client.latestReleaseVersion(.init(path: .init(slugOrId: pluginName), headers: .init(accept: [.init(contentType: .plainText)])))
         guard case let .ok(output) = response,
               case let OpenAPIRuntime.HTTPBody.Length.known(bytes) = try output.body.plainText.length
         else {
@@ -56,7 +56,7 @@ public struct HangarAPIClient {
     }
     
     public func downloadPlugin(name: String, version: String, platform: PluginPlatform) async throws -> PluginJavaArchive {
-        let response = try await client.downloadVersion(path: .init(slug: name, name: version, platform: platform))
+        let response = try await client.downloadVersion(path: .init(slugOrId: name, nameOrId: version, platform: platform))
         return try response.ok.body.application_java_hyphen_archive
     }
     
