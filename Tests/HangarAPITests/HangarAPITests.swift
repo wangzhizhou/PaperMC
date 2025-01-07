@@ -88,4 +88,13 @@ final class HangarAPITests {
         let projects = try #require(await client.searchPlugin(text: text).0)
         #expect(projects.isEmpty == false)
     }
+    
+    @Test(arguments: [
+        "ViaVersion"
+    ])
+    func latestVersion(for plugin: String) async throws {
+        let latestVersion = try #require(await client.latest(for: plugin, channel: "Release"))
+        print(latestVersion)
+        #expect(latestVersion.isEmpty == false)
+    }
 }

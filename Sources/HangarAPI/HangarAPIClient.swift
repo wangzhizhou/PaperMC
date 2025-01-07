@@ -37,7 +37,8 @@ public struct HangarAPIClient {
     
     public func versions(for pluginName: String) async throws -> [PluginVersion]? {
         let response = try await client.listVersions(path: .init(slugOrId: pluginName), query: .init(pagination: .init()))
-        return try response.ok.body.json.result
+        let versions = try response.ok.body.json.result
+        return versions
     }
     
     public func version(
@@ -49,13 +50,17 @@ public struct HangarAPIClient {
     }
     
     public func latestReleaseVersion(for pluginName: String) async throws -> String? {
-        let response = try await client.latestReleaseVersion(.init(path: .init(slugOrId: pluginName), headers: .init(accept: [.init(contentType: .plainText)])))
+        return try await latest(for: pluginName, channel: "Release")
+    }
+    
+    public func latest(for pluginName: String, channel: String) async throws -> String? {
+        let response = try await client.latestVersion(path: .init(slugOrId: pluginName), query: .init(channel: channel))
         guard case let .ok(output) = response,
-              case let OpenAPIRuntime.HTTPBody.Length.known(bytes) = try output.body.plainText.length
+            case let HTTPBody.Length.known(totalBytes) = try output.body.plainText.length
         else {
             return nil
         }
-        return try await String(collecting: try output.body.plainText, upTo: Int(bytes))
+        return try await String(collecting: try output.body.plainText, upTo: Int(totalBytes))
     }
     
     public func downloadPlugin(
