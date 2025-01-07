@@ -85,7 +85,7 @@ final class HangarAPITests {
         "Via"
     ])
     func searchPlugin(text: String) async throws {
-        let projects = try #require(await client.searchPlugin(text: text))
+        let projects = try #require(await client.searchPlugin(text: text).0)
         #expect(projects.isEmpty == false)
     }
 }
