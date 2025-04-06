@@ -152,8 +152,8 @@
                 }
               }
             },
-            "required": true
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -1345,16 +1345,6 @@
             "name": "query",
             "in": "query",
             "description": "The query to use when searching",
-            "style": "form",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "description": "Deprecated: Use 'query' instead",
-            "deprecated": true,
             "style": "form",
             "schema": {
               "type": "string"
