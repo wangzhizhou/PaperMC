@@ -14,8 +14,11 @@ final class PaperMCAPITests {
     
     @Test
     func allProjects() async throws {
-        let projects = try #require(await client.allProjects())
-        let allProjects = PaperMCAPI.Project.allCases
+        let sorthandler: (PaperMCAPI.Project, PaperMCAPI.Project) -> Bool = { p1, p2 in
+            p1.name < p2.name
+        }
+        let projects = try #require(await client.allProjects()).sorted(by: sorthandler)
+        let allProjects = PaperMCAPI.Project.allCases.sorted(by: sorthandler)
         #expect(projects == allProjects)
     }
     
@@ -29,12 +32,12 @@ final class PaperMCAPITests {
     @Test
     func latestBuildAppAndDownload() async throws {
         let project = PaperMCAPI.Project.paper
-        let projectVersion = "1.21.3"
+        let projectVersion = "1.21.8"
         let response = try #require(await client.latestBuildApplication(project: project, version: projectVersion))
         #expect(response.name == "\(project.name)-\(projectVersion)-\(response.build).jar")
         
         let (httpBody, totalBytes) = try #require(await client.downloadLatestBuild(project: project, version: projectVersion, build: response.build, name: response.name))
-        
+         
         var bytesCount = 0
         for try await chunk in httpBody {
             bytesCount += chunk.count

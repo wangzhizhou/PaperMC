@@ -31,6 +31,8 @@ final class HangarAPITests {
         "GriefPrevention",
         "SkinsRestorer",
         "WorldEdit",
+        "GetMeHome",
+        "OrzMC",
     ])
     func fetchPluginInfo(name: String) async throws {
         let latestReleaseVersion = try await client.latestReleaseVersion(for: name)
@@ -39,7 +41,6 @@ final class HangarAPITests {
     
     @Test(arguments: [
         "BackOnDeath",
-        "GetMeHome",
         "LoginSecurity",
         "LuckPerms",
         "Vault",
