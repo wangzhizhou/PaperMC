@@ -3273,11 +3273,19 @@
                 "description": "Data about the key to create",
                 "properties": {
                     "name": {
-                        "type": "string",
-                        "maxLength": 36,
-                        "maximum": 36,
-                        "minLength": 5,
-                        "minimum": 5
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "minLength": 5,
+                                "maxLength": 36
+                                
+                            },
+                            {
+                                "type": "integer",
+                                "minimum": 5,
+                                "maximum": 36
+                            }
+                        ]
                     },
                     "permissions": {
                         "type": "array",
