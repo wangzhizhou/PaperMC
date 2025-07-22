@@ -79,14 +79,25 @@ public extension DownloadAPIClient {
         return nil
     }
     
-    func latestBuildApplication(project: Project, version: String) async throws -> (build: Int32, name: String, sha256: String, downloadUrl: String)? {
+    func latestBuildInfo(project: Project, version: String) async throws -> (build: Int32, name: String, sha256: String, downloadUrl: String, sizeBytes: Int32)? {
         guard let latestBuild = try await latestBuild(project: project, version: version)
         else {
             return nil
         }
         
-        let response = try await client.getBuild(.init(path: .init(project: project.name, version: version, build: latestBuild)))
-        
+        return try await buildInfo(project: project, version: version, build: latestBuild)
+    }
+    
+    func buildInfo(
+        project: Project,
+        version: String,
+        build: Int32
+    ) async throws -> (build: Int32, name: String, sha256: String, downloadUrl: String, sizeBytes: Int32)? {
+        let response = try await client.getBuild(.init(path: .init(
+            project: project.name,
+            version: version,
+            build: build
+        )))
         switch response {
         case .ok(let output):
             switch output.body {
@@ -94,49 +105,33 @@ public extension DownloadAPIClient {
                 guard let downloadInfo = body.downloads?.additionalProperties["server:default"],
                       let name = downloadInfo.name,
                       let sha256 = downloadInfo.checksums?.sha256,
-                      let downloadUrl = downloadInfo.url
+                      let downloadUrl = downloadInfo.url,
+                      let sizeBytes = downloadInfo.size
                 else {
                     return nil
                 }
-                return (latestBuild, name, sha256, downloadUrl)
+                return (build, name, sha256, downloadUrl, sizeBytes)
             }
         default:
             return nil
         }
     }
     
-    //    func downloadLatestBuild(
-    //        project: Project,
-    //        version: String,
-    //        build: Int32,
-    //        name: String
-    //    ) async throws -> (bytes: HTTPBody, totalBytes: Int64)? {
-    //
-    //        let response = try await client.download(
-    //            .init(path: .init(
-    //                project: project.name,
-    //                version: version,
-    //                build: build,
-    //                download: name)
-    //            )
-    //        )
-    //
-    //        switch response {
-    //        case .ok(let output):
-    //            switch output.body {
-    //            case .json(let jsonObj):
-    //                print(jsonObj)
-    //            case .application_java_hyphen_archive(let jar):
-    //                switch jar.length {
-    //                case .known(let total):
-    //                    return (jar, total)
-    //                case .unknown:
-    //                    return nil
-    //                }
-    //            }
-    //        default:
-    //            break
-    //        }
-    //        return nil
-    //    }
+    func downloadBuild(
+        project: Project,
+        version: String,
+        build: Int32,
+        bufferSize: Int = 5 * 1024
+    ) async throws -> (AsyncStream<Result<Data, Error>>, size: Int64)? {
+        
+        let response = try await buildInfo(project: project, version: version, build: build)
+        
+        guard let downloadUrl = response?.downloadUrl,
+              let downloadURL = URL(string: downloadUrl)
+        else {
+            return nil
+        }
+        
+        return try await downloadFileWithBuffer(from: downloadURL, bufferSize: bufferSize)
+    }
 }

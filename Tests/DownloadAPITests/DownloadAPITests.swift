@@ -28,26 +28,36 @@ final class DownloadAPITests {
         let latestBuild = try await client.latestBuild(project: .paper, version: latestVersion)
         #expect(latestBuild != nil)
     }
-
-    @Test func latestBuildAppInfo() async throws {
+    
+    @Test func latestBuildInfo() async throws {
         let project = DownloadAPIClient.Project.paper
         let projectVersion = "1.21.8"
-        let response = try #require(await client.latestBuildApplication(project: project, version: projectVersion))
+        let response = try #require(await client.latestBuildInfo(project: project, version: projectVersion))
         #expect(response.name == "\(project.name)-\(projectVersion)-\(response.build).jar")
         #expect(!response.downloadUrl.isEmpty)
     }
-//    
-//    @Test
-//    func latestBuildAppDownload() async throws {
-//        let project = DownloadAPI.Project.paper
-//        let projectVersion = "1.21.8"
-//        let response = try #require(await client.latestBuildApplication(project: project, version: projectVersion))    
-//        let (httpBody, totalBytes) = try #require(await client.downloadLatestBuild(project: project, version: projectVersion, build: response.build, name: response.name))
-//        var bytesCount = 0
-//        for try await chunk in httpBody {
-//            bytesCount += chunk.count
-//            print("\(Int(Double(bytesCount) / Double(totalBytes) * 100))%")
-//        }
-//        #expect(bytesCount == totalBytes)
-//    }
+    
+    @Test
+    func latestBuildAppDownload() async throws {
+        let project = DownloadAPIClient.Project.paper
+        let projectVersion = "1.21.8"
+        let response = try #require(await client.latestBuildInfo(project: project, version: projectVersion))
+        let (dataStream, totalBytes) = try #require(await client.downloadBuild(
+            project: project,
+            version: projectVersion,
+            build: response.build
+        ))
+        var bytesCount = 0
+        for await chunkResult in dataStream {
+            switch chunkResult {
+            case .success(let chunk):
+                bytesCount += chunk.count
+                let progress = Double(bytesCount) / Double(totalBytes)
+                print("下载进度: \(String(format: "%.2f", progress * 100))%")
+            case .failure(let error):
+                throw error
+            }
+        }
+        #expect(bytesCount == totalBytes)
+    }
 }
