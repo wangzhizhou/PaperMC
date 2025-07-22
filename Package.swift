@@ -23,9 +23,9 @@ let package = Package(
             targets: ["HangarAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.7.1"),
+        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.10.0"),
         .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.8.2"),
-        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.2"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.1.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
