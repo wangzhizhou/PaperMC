@@ -58,6 +58,9 @@ let package = Package(
             name: "HangarAPITests",
             dependencies: ["HangarAPI"]
         ),
-        .target(name: "Common", dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")])
+        .target(
+            name: "Common",
+            dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")]),
+        .testTarget(name: "CommonTests", dependencies: ["Common"])
     ]
 )
