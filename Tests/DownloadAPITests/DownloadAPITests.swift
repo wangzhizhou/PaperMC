@@ -52,8 +52,8 @@ final class DownloadAPITests {
             switch chunkResult {
             case .success(let chunk):
                 bytesCount += chunk.count
-                let progress = Double(bytesCount) / Double(totalBytes)
-                print("下载进度: \(String(format: "%.2f", progress * 100))%")
+//                let progress = Double(bytesCount) / Double(totalBytes)
+//                print("下载进度: \(String(format: "%.2f", progress * 100))%")
             case .failure(let error):
                 throw error
             }
