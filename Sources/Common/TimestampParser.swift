@@ -14,12 +14,12 @@ public struct TimestampParser {
     private static let formats = [
         "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX",  // 带毫秒（2025-07-22T08:54:27.185Z）
         "yyyy-MM-dd'T'HH:mm:ssXXXXX",      // 不带毫秒（2025-07-22T08:42:22Z）
-        "yyyyMMdd'T'HHmmss.SSSXXXXX",     // 精简带毫秒
-        "yyyyMMdd'T'HHmmssXXXXX",         // 精简不带毫秒
+        "yyyyMMdd'T'HHmmss.SSSXXXXX",      // 精简带毫秒
+        "yyyyMMdd'T'HHmmssXXXXX",          // 精简不带毫秒
         "yyyy-MM-dd'T'HH:mm:ss.SSSZ",      // 旧格式兼容
-        "yyyy-MM-dd'T'HH:mm:ssZ"           // 旧格式兼容
+        "yyyy-MM-dd'T'HH:mm:ssZ",          // 旧格式兼容
+        "yyyy-MM-dd'T'HHmmssZ"             // 不带冒号时间
     ]
-    
     /// 解析 ISO 8601 时间戳
     public static func parse(_ timestamp: String) -> Date? {
         // 遍历所有支持的格式
