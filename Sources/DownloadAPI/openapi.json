@@ -1,0 +1,848 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "PaperMC Fill",
+        "version": "3.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://fill.papermc.io",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Meta v3"
+        },
+        {
+            "name": "Meta v2"
+        }
+    ],
+    "paths": {
+        "/v2/projects": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getProjects_1",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getProject_1",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}/version_group/{family}": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getFamily",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "family",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}/version_group/{family}/builds": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getFamilyBuilds",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "family",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}/versions/{version}": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getVersion_1",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}/versions/{version}/builds": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getVersionBuilds",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v2/projects/{project}/versions/{version}/builds/{build}": {
+            "get": {
+                "deprecated": true,
+                "operationId": "getVersionBuild",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "build",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "tags": [
+                    "Meta v2"
+                ]
+            }
+        },
+        "/v3/projects": {
+            "get": {
+                "operationId": "getProjects",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectsResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get a list of all projects",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}": {
+            "get": {
+                "operationId": "getProject",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get details of a specific project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}/versions": {
+            "get": {
+                "operationId": "getVersions",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "versions": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/VersionResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get a list of versions for a specific project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}/versions/{version}": {
+            "get": {
+                "operationId": "getVersion",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The name of the version",
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get details of a specific version for a project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}/versions/{version}/builds": {
+            "get": {
+                "operationId": "getBuilds",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The name of the version",
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Filter builds by channel",
+                        "in": "query",
+                        "name": "channel",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ALPHA",
+                                "BETA",
+                                "STABLE",
+                                "RECOMMENDED"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BuildResponse"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get a list of builds for a specific version of a project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}/versions/{version}/builds/latest": {
+            "get": {
+                "operationId": "getLatestBuild",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The name of the version",
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BuildResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get details of the latest build for a version of a project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        },
+        "/v3/projects/{project}/versions/{version}/builds/{build}": {
+            "get": {
+                "operationId": "getBuild",
+                "parameters": [
+                    {
+                        "description": "The name of the project",
+                        "in": "path",
+                        "name": "project",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The name of the version",
+                        "in": "path",
+                        "name": "version",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "The name of the build",
+                        "in": "path",
+                        "name": "build",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BuildResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    }
+                },
+                "summary": "Get details of a specific build for a version of a project",
+                "tags": [
+                    "Meta v3"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BuildResponse": {
+                "type": "object",
+                "properties": {
+                    "channel": {
+                        "type": "string",
+                        "enum": [
+                            "ALPHA",
+                            "BETA",
+                            "STABLE",
+                            "RECOMMENDED"
+                        ]
+                    },
+                    "commits": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Commit"
+                        }
+                    },
+                    "downloads": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/Download"
+                        }
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Checksums": {
+                "type": "object",
+                "properties": {
+                    "sha256": {
+                        "type": "string",
+                        "pattern": "\\b[a-fA-F0-9]{64}\\b"
+                    }
+                }
+            },
+            "Commit": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "sha": {
+                        "type": "string",
+                        "pattern": "\\b[0-9a-f]{40}\\b"
+                    },
+                    "time": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Download": {
+                "type": "object",
+                "properties": {
+                    "checksums": {
+                        "$ref": "#/components/schemas/Checksums"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "ok": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Java": {
+                "type": "object",
+                "properties": {
+                    "flags": {
+                        "$ref": "#/components/schemas/JavaFlags"
+                    },
+                    "version": {
+                        "$ref": "#/components/schemas/JavaVersion"
+                    }
+                }
+            },
+            "JavaFlags": {
+                "type": "object",
+                "properties": {
+                    "recommended": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "JavaVersion": {
+                "type": "object",
+                "properties": {
+                    "minimum": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Project": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProjectResponse": {
+                "type": "object",
+                "properties": {
+                    "project": {
+                        "$ref": "#/components/schemas/Project"
+                    },
+                    "versions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "ProjectsResponse": {
+                "type": "object",
+                "properties": {
+                    "projects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProjectResponse"
+                        }
+                    }
+                }
+            },
+            "Support": {
+                "type": "object",
+                "properties": {
+                    "end": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "SUPPORTED",
+                            "DEPRECATED",
+                            "UNSUPPORTED"
+                        ]
+                    }
+                }
+            },
+            "Version": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "java": {
+                        "$ref": "#/components/schemas/Java"
+                    },
+                    "support": {
+                        "$ref": "#/components/schemas/Support"
+                    }
+                }
+            },
+            "VersionResponse": {
+                "type": "object",
+                "properties": {
+                    "builds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "version": {
+                        "$ref": "#/components/schemas/Version"
+                    }
+                }
+            }
+        }
+    }
+}

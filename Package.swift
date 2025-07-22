@@ -16,22 +16,22 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "PaperMCAPI",
-            targets: ["PaperMCAPI"]),
+            name: "DownloadAPI",
+            targets: ["DownloadAPI"]),
         .library(
             name: "HangarAPI",
             targets: ["HangarAPI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.7.1"),
+        .package(url: "https://github.com/apple/swift-openapi-generator.git", from: "1.10.0"),
         .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.8.2"),
-        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.2"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.1.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "PaperMCAPI",
+            name: "DownloadAPI",
             dependencies: [
                 "Common",
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
@@ -41,8 +41,8 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "PaperMCAPITests",
-            dependencies: ["PaperMCAPI"]
+            name: "DownloadAPITests",
+            dependencies: ["DownloadAPI"]
         ),
         .target(
             name: "HangarAPI",
@@ -58,6 +58,9 @@ let package = Package(
             name: "HangarAPITests",
             dependencies: ["HangarAPI"]
         ),
-        .target(name: "Common", dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")])
+        .target(
+            name: "Common",
+            dependencies: [.product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")]),
+        .testTarget(name: "CommonTests", dependencies: ["Common"])
     ]
 )
