@@ -1,24 +1,24 @@
 //
-//  PaperMCAPITests.swift
+//  DownloadAPITests.swift
 //
 //
 //  Created by joker on 2024/1/14.
 //
 
 import Testing
-import PaperMCAPI
+import DownloadAPI
 
-final class PaperMCAPITests {
+final class DownloadAPITests {
     
-    let client = PaperMCAPI()
+    let client = DownloadAPI()
     
     @Test
     func allProjects() async throws {
-        let sorthandler: (PaperMCAPI.Project, PaperMCAPI.Project) -> Bool = { p1, p2 in
+        let sorthandler: (DownloadAPI.Project, DownloadAPI.Project) -> Bool = { p1, p2 in
             p1.name < p2.name
         }
         let projects = try #require(await client.allProjects()).sorted(by: sorthandler)
-        let allProjects = PaperMCAPI.Project.allCases.sorted(by: sorthandler)
+        let allProjects = DownloadAPI.Project.allCases.sorted(by: sorthandler)
         #expect(projects == allProjects)
     }
     
@@ -30,7 +30,7 @@ final class PaperMCAPITests {
     }
 
     @Test func latestBuildAppInfo() async throws {
-        let project = PaperMCAPI.Project.paper
+        let project = DownloadAPI.Project.paper
         let projectVersion = "1.21.8"
         let response = try #require(await client.latestBuildApplication(project: project, version: projectVersion))
         #expect(response.name == "\(project.name)-\(projectVersion)-\(response.build).jar")
@@ -38,7 +38,7 @@ final class PaperMCAPITests {
     
     @Test
     func latestBuildAppDownload() async throws {
-        let project = PaperMCAPI.Project.paper
+        let project = DownloadAPI.Project.paper
         let projectVersion = "1.21.8"
         let response = try #require(await client.latestBuildApplication(project: project, version: projectVersion))    
         let (httpBody, totalBytes) = try #require(await client.downloadLatestBuild(project: project, version: projectVersion, build: response.build, name: response.name))
