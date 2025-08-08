@@ -69,7 +69,8 @@ final class HangarAPITests {
     @Test
     func downloadPluginToFile() async throws {
         let pluginName = "GetMeHome"
-        let pluginVersion = "3.0.0"
+        let latestReleaseVersion = try #require(await client.latestReleaseVersion(for: pluginName))
+        let pluginVersion = latestReleaseVersion
         let jarFileName = "\(pluginName)_\(pluginVersion).jar"
         let dstFileURL = try #require(FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first?.appending(path: jarFileName))
         let progressStream = try #require(await client.downloadPlugin(name: pluginName, version: pluginVersion, platform: .PAPER, toFileURL: dstFileURL))

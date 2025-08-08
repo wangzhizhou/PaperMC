@@ -56,7 +56,7 @@ public struct HangarAPIClient {
     public func latest(for pluginName: String, channel: String) async throws -> String? {
         let response = try await client.latestVersion(path: .init(slugOrId: pluginName), query: .init(channel: channel))
         guard case let .ok(output) = response,
-            case let HTTPBody.Length.known(totalBytes) = try output.body.plainText.length
+              case let HTTPBody.Length.known(totalBytes) = try output.body.plainText.length
         else {
             return nil
         }
